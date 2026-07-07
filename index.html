@@ -3,113 +3,92 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Stock Huiles & Graisses — Bornel</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
+<title>Stock Lubrifiants</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #f5f4f0; --surface: #ffffff; --surface2: #eeecea; --border: #d8d5cf;
-  --text: #1a1917; --text2: #6b6860; --text3: #9e9b95;
-  --danger: #c0392b; --danger-bg: #fdf0ee;
-  --warn: #b45309; --warn-bg: #fef9ee;
-  --ok: #166534; --ok-bg: #f0fdf4;
-  --mono: 'IBM Plex Mono', monospace;
-  --sans: 'IBM Plex Sans', sans-serif;
-  --radius: 8px; --radius-lg: 12px;
+  --bg:#f5f4f0;--surface:#fff;--surface2:#eeecea;--border:#d8d5cf;
+  --text:#1a1917;--text2:#6b6860;--text3:#9e9b95;
+  --danger:#c0392b;--danger-bg:#fdf0ee;--warn:#b45309;--warn-bg:#fef9ee;--ok:#166534;--ok-bg:#f0fdf4;
+  --mono:'IBM Plex Mono',monospace;--sans:'IBM Plex Sans',sans-serif;--radius:8px;--radius-lg:12px;
 }
-* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-body { font-family: var(--sans); background: var(--bg); color: var(--text); min-height: 100vh; }
-.app { max-width: 480px; margin: 0 auto; padding-bottom: 80px; min-height: 100vh; }
-
-.header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 14px 16px 12px; position: sticky; top: 0; z-index: 20; }
-.header-top { display: flex; justify-content: space-between; align-items: flex-start; }
-.header-title { font-size: 15px; font-weight: 600; letter-spacing: -0.02em; }
-.header-sub { font-size: 11px; color: var(--text3); margin-top: 2px; font-family: var(--mono); }
-.sync-btn { background: none; border: 1px solid var(--border); border-radius: 6px; padding: 5px 10px; font-size: 12px; font-family: var(--mono); cursor: pointer; color: var(--text2); display: flex; align-items: center; gap: 5px; }
-.sync-btn:active { background: var(--surface2); }
-.sync-btn.syncing { opacity: .5; pointer-events: none; }
-.spin { display: inline-block; animation: spin .8s linear infinite; }
-@keyframes spin { to { transform: rotate(360deg); } }
-
-.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border-bottom: 1px solid var(--border); }
-.stat { background: var(--surface); padding: 10px 12px; text-align: center; }
-.stat-val { font-size: 22px; font-weight: 600; font-family: var(--mono); letter-spacing: -0.03em; line-height: 1; }
-.stat-val.danger { color: var(--danger); }
-.stat-val.warn { color: var(--warn); }
-.stat-label { font-size: 10px; color: var(--text3); margin-top: 3px; text-transform: uppercase; letter-spacing: .05em; }
-
-.controls { padding: 10px 12px; display: flex; gap: 8px; background: var(--surface); border-bottom: 1px solid var(--border); }
-.search-wrap { flex: 1; position: relative; }
-.search-wrap svg { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--text3); pointer-events: none; }
-input[type=search], select {
-  width: 100%; height: 36px; border: 1px solid var(--border); border-radius: var(--radius);
-  background: var(--bg); color: var(--text); font-family: var(--sans); font-size: 14px; transition: border .15s;
-}
-input[type=search] { padding: 0 10px 0 32px; }
-input[type=search]:focus, select:focus { outline: none; border-color: var(--text); background: var(--surface); }
-select { padding: 0 8px; cursor: pointer; min-width: 110px; }
-
-.list { padding: 10px 12px; display: flex; flex-direction: column; gap: 6px; }
-.section-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: var(--text3); padding: 8px 2px 4px; border-bottom: 1px solid var(--border); margin-bottom: 2px; display: flex; align-items: center; gap: 6px; }
-
-.card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 12px 14px; }
-.card.zero { border-left: 3px solid var(--danger); }
-.card.low { border-left: 3px solid var(--warn); }
-.card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
-.card-ref { font-size: 13px; font-weight: 500; line-height: 1.3; color: var(--text); }
-.card-contenant { font-size: 10px; font-weight: 500; padding: 3px 8px; border-radius: 20px; border: 1px solid var(--border); color: var(--text2); white-space: nowrap; flex-shrink: 0; font-family: var(--mono); }
-.card-note { margin-top: 6px; font-size: 11px; color: var(--warn); background: var(--warn-bg); border-radius: 4px; padding: 3px 7px; }
-.card-bottom { display: flex; align-items: center; justify-content: space-between; margin-top: 10px; }
-.stock-ctrl { display: flex; align-items: center; gap: 10px; }
-.btn-round { width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--border); background: var(--bg); font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--text); transition: all .12s; }
-.btn-round:active { transform: scale(0.92); background: var(--surface2); }
-.btn-round:disabled { opacity: .3; pointer-events: none; }
-.stock-display { display: flex; flex-direction: column; align-items: center; min-width: 50px; }
-.stock-num { font-size: 24px; font-weight: 600; font-family: var(--mono); line-height: 1; }
-.stock-num.zero { color: var(--danger); }
-.stock-num.low { color: var(--warn); }
-.stock-unit { font-size: 10px; color: var(--text3); font-family: var(--mono); margin-top: 1px; }
-.status-tag { font-size: 11px; font-weight: 500; padding: 3px 8px; border-radius: 4px; }
-.status-tag.zero { background: var(--danger-bg); color: var(--danger); }
-.status-tag.low { background: var(--warn-bg); color: var(--warn); }
-.status-tag.ok { background: var(--ok-bg); color: var(--ok); }
-
-.empty { text-align: center; padding: 60px 20px; color: var(--text3); font-size: 14px; }
-.empty-icon { font-size: 32px; margin-bottom: 10px; }
-
-.alert-card { background: var(--danger-bg); border: 1px solid #f5c6c3; border-radius: var(--radius); padding: 10px 14px; margin-bottom: 6px; }
-.alert-ref { font-size: 13px; font-weight: 500; color: var(--danger); }
-.alert-loc { font-size: 11px; color: var(--text2); margin-top: 2px; }
-
-.config-screen { padding: 16px 16px; }
-.config-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 16px; margin-bottom: 12px; }
-.config-title { font-size: 13px; font-weight: 600; margin-bottom: 8px; }
-.config-input { width: 100%; height: 36px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg); color: var(--text); font-family: var(--sans); font-size: 13px; padding: 0 10px; margin-bottom: 8px; }
-.config-input:focus { outline: none; border-color: var(--text); }
-.config-select { width: 100%; height: 36px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg); color: var(--text); font-family: var(--sans); font-size: 13px; padding: 0 8px; margin-bottom: 8px; cursor: pointer; }
-.config-label { font-size: 11px; color: var(--text2); margin-bottom: 4px; display: block; }
-.btn-primary { width: 100%; height: 40px; background: var(--text); color: var(--bg); border: none; border-radius: var(--radius); font-family: var(--sans); font-size: 14px; font-weight: 500; cursor: pointer; }
-.btn-primary:active { opacity: .8; }
-.config-status { padding: 8px 12px; border-radius: 6px; font-size: 12px; margin-bottom: 8px; }
-.config-status.ok { background: var(--ok-bg); color: var(--ok); }
-
-.bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--surface); border-top: 1px solid var(--border); display: flex; max-width: 480px; margin: 0 auto; z-index: 20; padding: 6px 0 10px; }
-.nav-btn { flex: 1; background: none; border: none; cursor: pointer; padding: 6px 0; text-align: center; }
-.nav-icon { font-size: 20px; display: block; }
-.nav-label { font-size: 10px; color: var(--text3); display: block; margin-top: 2px; letter-spacing: .03em; }
-.nav-btn.active .nav-label { color: var(--text); font-weight: 500; }
-
-.toast { position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%) translateY(10px); background: var(--text); color: var(--bg); padding: 8px 18px; border-radius: 20px; font-size: 13px; font-family: var(--mono); opacity: 0; transition: all .2s; pointer-events: none; z-index: 100; white-space: nowrap; }
-.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-
-.pin-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 200; display: flex; align-items: center; justify-content: center; }
-.pin-box { background: var(--surface); border-radius: var(--radius-lg); padding: 28px 24px; width: 290px; text-align: center; }
-.pin-title { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
-.pin-sub { font-size: 12px; color: var(--text2); margin-bottom: 16px; }
-.pin-input { width: 100%; height: 48px; border: 1px solid var(--border); border-radius: var(--radius); text-align: center; font-size: 26px; font-family: var(--mono); letter-spacing: 10px; background: var(--bg); color: var(--text); }
-.pin-input:focus { outline: none; border-color: var(--text); }
-.pin-error { font-size: 12px; color: var(--danger); margin-top: 8px; height: 16px; }
-.pin-ok { width: 100%; height: 42px; margin-top: 14px; background: var(--text); color: var(--bg); border: none; border-radius: var(--radius); font-size: 15px; font-weight: 500; cursor: pointer; font-family: var(--sans); }
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:100vh;}
+.app{max-width:480px;margin:0 auto;padding-bottom:80px;}
+.header{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 16px 12px;position:sticky;top:0;z-index:20;}
+.header-top{display:flex;justify-content:space-between;align-items:flex-start;}
+.header-title{font-size:15px;font-weight:600;letter-spacing:-.02em;}
+.header-sub{font-size:11px;color:var(--text3);margin-top:2px;font-family:var(--mono);}
+.sync-btn{background:none;border:1px solid var(--border);border-radius:6px;padding:5px 10px;font-size:12px;font-family:var(--mono);cursor:pointer;color:var(--text2);display:flex;align-items:center;gap:5px;}
+.sync-btn:active{background:var(--surface2);}
+.sync-btn.syncing{opacity:.5;pointer-events:none;}
+.spin{display:inline-block;animation:spin .8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border-bottom:1px solid var(--border);}
+.stat{background:var(--surface);padding:10px 12px;text-align:center;}
+.stat-val{font-size:22px;font-weight:600;font-family:var(--mono);line-height:1;}
+.stat-val.danger{color:var(--danger);}
+.stat-val.warn{color:var(--warn);}
+.stat-label{font-size:10px;color:var(--text3);margin-top:3px;text-transform:uppercase;letter-spacing:.05em;}
+.controls{padding:10px 12px;display:flex;gap:8px;background:var(--surface);border-bottom:1px solid var(--border);}
+.search-wrap{flex:1;position:relative;}
+.search-wrap svg{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--text3);pointer-events:none;}
+input[type=search],select{width:100%;height:36px;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14px;}
+input[type=search]{padding:0 10px 0 32px;}
+input[type=search]:focus,select:focus{outline:none;border-color:var(--text);background:var(--surface);}
+select{padding:0 8px;cursor:pointer;min-width:110px;}
+.list{padding:10px 12px;display:flex;flex-direction:column;gap:6px;}
+.section-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--text3);padding:8px 2px 4px;border-bottom:1px solid var(--border);margin-bottom:2px;display:flex;align-items:center;gap:6px;}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:12px 14px;}
+.card.zero{border-left:3px solid var(--danger);}
+.card.low{border-left:3px solid var(--warn);}
+.card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;}
+.card-ref{font-size:13px;font-weight:500;line-height:1.3;}
+.card-cat{font-size:10px;font-weight:500;padding:3px 8px;border-radius:20px;border:1px solid var(--border);color:var(--text2);white-space:nowrap;flex-shrink:0;font-family:var(--mono);}
+.card-note{margin-top:6px;font-size:11px;color:var(--warn);background:var(--warn-bg);border-radius:4px;padding:3px 7px;}
+.card-bottom{display:flex;align-items:center;justify-content:space-between;margin-top:10px;}
+.stock-ctrl{display:flex;align-items:center;gap:10px;}
+.btn-round{width:34px;height:34px;border-radius:50%;border:1px solid var(--border);background:var(--bg);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text);transition:all .12s;}
+.btn-round:active{transform:scale(.92);background:var(--surface2);}
+.btn-round:disabled{opacity:.3;pointer-events:none;}
+.stock-num{font-size:24px;font-weight:600;font-family:var(--mono);min-width:32px;text-align:center;line-height:1;}
+.stock-num.zero{color:var(--danger);}
+.stock-num.low{color:var(--warn);}
+.status-tag{font-size:11px;font-weight:500;padding:3px 8px;border-radius:4px;}
+.status-tag.zero{background:var(--danger-bg);color:var(--danger);}
+.status-tag.low{background:var(--warn-bg);color:var(--warn);}
+.status-tag.ok{background:var(--ok-bg);color:var(--ok);}
+.empty{text-align:center;padding:60px 20px;color:var(--text3);font-size:14px;}
+.empty-icon{font-size:32px;margin-bottom:10px;}
+.alert-card{background:var(--danger-bg);border:1px solid #f5c6c3;border-radius:var(--radius);padding:10px 14px;margin-bottom:6px;}
+.alert-ref{font-size:13px;font-weight:500;color:var(--danger);}
+.alert-loc{font-size:11px;color:var(--text2);margin-top:2px;}
+.config-screen{padding:16px;}
+.config-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:16px;margin-bottom:12px;}
+.config-title{font-size:13px;font-weight:600;margin-bottom:8px;}
+.config-input{width:100%;height:36px;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg);color:var(--text);font-family:var(--sans);font-size:13px;padding:0 10px;margin-bottom:8px;}
+.config-input:focus{outline:none;border-color:var(--text);}
+.config-select{width:100%;height:36px;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg);color:var(--text);font-family:var(--sans);font-size:13px;padding:0 8px;margin-bottom:8px;cursor:pointer;}
+.config-label{font-size:11px;color:var(--text2);margin-bottom:4px;display:block;}
+.btn-primary{width:100%;height:40px;background:var(--text);color:var(--bg);border:none;border-radius:var(--radius);font-family:var(--sans);font-size:14px;font-weight:500;cursor:pointer;}
+.btn-primary:active{opacity:.8;}
+.config-status{padding:8px 12px;border-radius:6px;font-size:12px;margin-bottom:8px;}
+.config-status.ok{background:var(--ok-bg);color:var(--ok);}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-top:1px solid var(--border);display:flex;max-width:480px;margin:0 auto;z-index:20;padding:6px 0 10px;}
+.nav-btn{flex:1;background:none;border:none;cursor:pointer;padding:6px 0;text-align:center;}
+.nav-icon{font-size:20px;display:block;}
+.nav-label{font-size:10px;color:var(--text3);display:block;margin-top:2px;}
+.nav-btn.active .nav-label{color:var(--text);font-weight:500;}
+.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(10px);background:var(--text);color:var(--bg);padding:8px 18px;border-radius:20px;font-size:13px;font-family:var(--mono);opacity:0;transition:all .2s;pointer-events:none;z-index:100;white-space:nowrap;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.pin-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;display:flex;align-items:center;justify-content:center;}
+.pin-box{background:var(--surface);border-radius:var(--radius-lg);padding:28px 24px;width:290px;text-align:center;}
+.pin-title{font-size:15px;font-weight:600;margin-bottom:6px;}
+.pin-sub{font-size:12px;color:var(--text2);margin-bottom:16px;}
+.pin-input{width:100%;height:48px;border:1px solid var(--border);border-radius:var(--radius);text-align:center;font-size:26px;font-family:var(--mono);letter-spacing:10px;background:var(--bg);color:var(--text);}
+.pin-input:focus{outline:none;border-color:var(--text);}
+.pin-error{font-size:12px;color:var(--danger);margin-top:8px;height:16px;}
+.pin-ok{width:100%;height:42px;margin-top:14px;background:var(--text);color:var(--bg);border:none;border-radius:var(--radius);font-size:15px;font-weight:500;cursor:pointer;font-family:var(--sans);}
 </style>
 </head>
 <body>
@@ -120,13 +99,10 @@ select { padding: 0 8px; cursor: pointer; min-width: 110px; }
         <div class="header-title">Stock huiles & graisses — Bornel</div>
         <div class="header-sub" id="sync-status">Chargement…</div>
       </div>
-      <button class="sync-btn" id="sync-btn" onclick="syncNow()">
-        <span id="sync-icon">↻</span> Sync
-      </button>
+      <button class="sync-btn" id="sync-btn" onclick="syncNow()"><span id="sync-icon">↻</span> Sync</button>
     </div>
   </div>
 
-  <!-- Vue Stock -->
   <div id="view-stock">
     <div class="stats">
       <div class="stat"><div class="stat-val" id="s-total">—</div><div class="stat-label">Références</div></div>
@@ -140,45 +116,34 @@ select { padding: 0 8px; cursor: pointer; min-width: 110px; }
       </div>
       <select id="cat-filter" onchange="render()">
         <option value="">Toutes</option>
-        <option value="Huiles">Huiles</option>
         <option value="Graisses">Graisses</option>
+        <option value="Huiles">Huiles</option>
+        <option value="Aérosols">Aérosols</option>
+        <option value="Autres">Autres</option>
       </select>
     </div>
     <div class="list" id="filter-list"></div>
   </div>
 
-  <!-- Vue Alertes -->
-  <div id="view-alerts" style="display:none">
-    <div class="list" id="alert-list"></div>
-  </div>
+  <div id="view-alerts" style="display:none"><div class="list" id="alert-list"></div></div>
 
-  <!-- Vue Gérer -->
   <div id="view-manage" style="display:none">
     <div class="config-screen">
       <div class="config-card" id="form-card">
         <div class="config-title" id="form-title">Ajouter un produit</div>
         <label class="config-label">Référence</label>
-        <input class="config-input" id="f-ref" placeholder="Ex: Mobilgear 600 XP 220">
+        <input class="config-input" id="f-ref" placeholder="Ex: Total multis EP2">
         <label class="config-label">Catégorie</label>
         <select class="config-select" id="f-cat">
-          <option value="Huiles">Huiles</option>
           <option value="Graisses">Graisses</option>
-        </select>
-        <label class="config-label">Contenant</label>
-        <select class="config-select" id="f-contenant">
-          <option value="Fûts">Fûts</option>
-          <option value="Bidons">Bidons</option>
-          <option value="Tonnelets">Tonnelets</option>
-          <option value="Cartouches">Cartouches</option>
-          <option value="Pots">Pots</option>
+          <option value="Huiles">Huiles</option>
           <option value="Aérosols">Aérosols</option>
-          <option value="Litres">Litres</option>
-          <option value="Autre">Autre</option>
+          <option value="Autres">Autres</option>
         </select>
         <label class="config-label">Quantité en stock</label>
-        <input class="config-input" type="number" id="f-stock" placeholder="Quantité" min="0" value="1">
+        <input class="config-input" type="number" id="f-stock" min="0" value="1">
         <label class="config-label">Note (optionnel)</label>
-        <input class="config-input" id="f-note" placeholder="Ex: stocké en réserve, commande en cours…">
+        <input class="config-input" id="f-note" placeholder="Ex: tonnelet, bidon 5L…">
         <div style="display:flex;gap:8px;margin-top:4px;">
           <button class="btn-primary" id="form-submit-btn" onclick="submitForm()">Ajouter</button>
           <button id="form-cancel-btn" onclick="cancelForm()" style="display:none;flex:1;height:40px;background:none;border:1px solid var(--border);border-radius:var(--radius);font-size:14px;cursor:pointer;color:var(--text2);">Annuler</button>
@@ -192,30 +157,21 @@ select { padding: 0 8px; cursor: pointer; min-width: 110px; }
     </div>
   </div>
 
-  <!-- Vue Config -->
   <div id="view-config" style="display:none">
     <div class="config-screen">
       <div class="config-card">
-        <div class="config-title">Statut de connexion</div>
-        <div class="config-status ok">✓ JSONBin connecté — stock partagé entre appareils</div>
+        <div class="config-title">Statut</div>
+        <div class="config-status ok">✓ Connecté — stock partagé entre appareils</div>
         <button class="btn-primary" onclick="syncNow()">Forcer une synchronisation</button>
       </div>
     </div>
   </div>
 
   <div class="bottom-nav">
-    <button class="nav-btn active" id="nav-stock" onclick="switchView('stock')">
-      <span class="nav-icon">🛢️</span><span class="nav-label">Stock</span>
-    </button>
-    <button class="nav-btn" id="nav-alerts" onclick="switchView('alerts')">
-      <span class="nav-icon">⚠️</span><span class="nav-label">Alertes</span>
-    </button>
-    <button class="nav-btn" id="nav-manage" onclick="switchView('manage')">
-      <span class="nav-icon">✏️</span><span class="nav-label">Gérer</span>
-    </button>
-    <button class="nav-btn" id="nav-config" onclick="switchView('config')">
-      <span class="nav-icon">⚙️</span><span class="nav-label">Config</span>
-    </button>
+    <button class="nav-btn active" id="nav-stock" onclick="switchView('stock')"><span class="nav-icon">🛢️</span><span class="nav-label">Stock</span></button>
+    <button class="nav-btn" id="nav-alerts" onclick="switchView('alerts')"><span class="nav-icon">⚠️</span><span class="nav-label">Alertes</span></button>
+    <button class="nav-btn" id="nav-manage" onclick="switchView('manage')"><span class="nav-icon">✏️</span><span class="nav-label">Gérer</span></button>
+    <button class="nav-btn" id="nav-config" onclick="switchView('config')"><span class="nav-icon">⚙️</span><span class="nav-label">Config</span></button>
   </div>
 </div>
 
@@ -224,7 +180,7 @@ select { padding: 0 8px; cursor: pointer; min-width: 110px; }
 <div class="pin-overlay" id="pin-overlay">
   <div class="pin-box">
     <div class="pin-title">🔒 Accès sécurisé</div>
-    <div class="pin-sub">Entrez le code PIN pour accéder à l'application</div>
+    <div class="pin-sub">Entrez le code PIN</div>
     <input class="pin-input" type="password" inputmode="numeric" maxlength="4" id="pin-input" placeholder="····" onkeydown="if(event.key==='Enter')pinConfirm()">
     <div class="pin-error" id="pin-error"></div>
     <button class="pin-ok" onclick="pinConfirm()">Valider</button>
@@ -232,40 +188,39 @@ select { padding: 0 8px; cursor: pointer; min-width: 110px; }
 </div>
 
 <script>
-const BIN_ID = '6a2ba9dada38895dfeb310e3';
+// Même bin que filtres-bornel, clé séparée "lubrifiants"
+const BIN_ID = '69f85f37856a682189a3e63b';
 const API_KEY = '$2a$10$ctzdSTc.wYqlKzv66nSuCOzi7496h0P/tIE/.wqhFjbwGti/oSwkG';
 const BIN_URL = 'https://api.jsonbin.io/v3/b/' + BIN_ID;
 const PIN = '2025';
-
-const CAT_ICONS = { 'Huiles': '🔵', 'Graisses': '🟡' };
-const CONTENANT_ICONS = { 'Fûts':'🛢️', 'Bidons':'🧴', 'Tonnelets':'🪣', 'Cartouches':'🔧', 'Pots':'🫙', 'Aérosols':'💨', 'Litres':'💧', 'Autre':'📦' };
+const CAT_ICONS = {'Graisses':'🟡','Huiles':'🔵','Aérosols':'💨','Autres':'📦'};
 
 const INITIAL_DATA = [
-  {id:0,  ref:"Nuto H46",              categorie:"Huiles",   contenant:"Litres",     stock:1000, note:""},
-  {id:1,  ref:"DTE 24",                categorie:"Huiles",   contenant:"Fûts",       stock:2,    note:""},
-  {id:2,  ref:"Pyrotech HFC 46",       categorie:"Huiles",   contenant:"Fûts",       stock:2,    note:""},
-  {id:3,  ref:"DTE 26",                categorie:"Huiles",   contenant:"Fûts",       stock:3,    note:""},
-  {id:4,  ref:"Glygoyle 460",          categorie:"Huiles",   contenant:"Fûts",       stock:8,    note:""},
-  {id:5,  ref:"Vacuoline 148",         categorie:"Huiles",   contenant:"Fûts",       stock:3,    note:""},
-  {id:6,  ref:"Wyrol B460",            categorie:"Huiles",   contenant:"Fûts",       stock:3,    note:""},
-  {id:7,  ref:"Mobilgear 600 XP 220",  categorie:"Huiles",   contenant:"Fûts",       stock:5,    note:""},
-  {id:8,  ref:"Wyrol HS 22",           categorie:"Huiles",   contenant:"Fûts",       stock:2,    note:""},
-  {id:9,  ref:"DS COROL AL 70",        categorie:"Huiles",   contenant:"Fûts",       stock:2,    note:""},
-  {id:10, ref:"Rarus 427",             categorie:"Huiles",   contenant:"Bidons",     stock:5,    note:""},
-  {id:11, ref:"Delvac 1330",           categorie:"Huiles",   contenant:"Fûts",       stock:1,    note:""},
-  {id:12, ref:"Mobilgrease XHP 222",   categorie:"Graisses", contenant:"Fûts",       stock:2,    note:""},
-  {id:13, ref:"Mobilgrease Spécial",   categorie:"Graisses", contenant:"Tonnelets",  stock:2,    note:""},
-  {id:14, ref:"Mobilgrease Polyrex 462",categorie:"Graisses",contenant:"Cartouches", stock:2,    note:""},
-  {id:15, ref:"Mobilgrease Spécial",   categorie:"Graisses", contenant:"Cartouches", stock:3,    note:""},
-  {id:16, ref:"Mobilgrease XHP 222",   categorie:"Graisses", contenant:"Cartouches", stock:8,    note:""},
-  {id:17, ref:"Sogelub HT",            categorie:"Graisses", contenant:"Tonnelets",  stock:3,    note:""},
-  {id:18, ref:"Sogelub MD Green",      categorie:"Graisses", contenant:"Tonnelets",  stock:3,    note:""},
-  {id:19, ref:"Mobilgrease Unirex N3", categorie:"Graisses", contenant:"Cartouches", stock:5,    note:""},
-  {id:20, ref:"SKF LGLT 2/1",          categorie:"Graisses", contenant:"Pots",       stock:2,    note:""},
-  {id:21, ref:"SKF LGMT 2/1",          categorie:"Graisses", contenant:"Pots",       stock:2,    note:""},
-  {id:22, ref:"SKF LAGD 125/EM2",      categorie:"Graisses", contenant:"Cartouches", stock:5,    note:""},
-  {id:23, ref:"SKF LAGD 125/WA2",      categorie:"Graisses", contenant:"Cartouches", stock:5,    note:""},
-  {id:24, ref:"Sogelub R660",          categorie:"Graisses", contenant:"Aérosols",   stock:7,    note:""},
+  {id:0,ref:"Nuto H46",categorie:"Huiles",stock:1000,note:"Litres"},
+  {id:1,ref:"DTE 24",categorie:"Huiles",stock:2,note:"Fûts"},
+  {id:2,ref:"Pyrotech HFC 46",categorie:"Huiles",stock:2,note:"Fûts"},
+  {id:3,ref:"DTE 26",categorie:"Huiles",stock:3,note:"Fûts"},
+  {id:4,ref:"Glygoyle 460",categorie:"Huiles",stock:8,note:"Fûts"},
+  {id:5,ref:"Vacuoline 148",categorie:"Huiles",stock:3,note:"Fûts"},
+  {id:6,ref:"Wyrol B460",categorie:"Huiles",stock:3,note:"Fûts"},
+  {id:7,ref:"Mobilgear 600 XP 220",categorie:"Huiles",stock:5,note:"Fûts"},
+  {id:8,ref:"Wyrol HS 22",categorie:"Huiles",stock:2,note:"Fûts"},
+  {id:9,ref:"DS COROL AL 70",categorie:"Huiles",stock:2,note:"Fûts"},
+  {id:10,ref:"Rarus 427",categorie:"Huiles",stock:5,note:"Bidons"},
+  {id:11,ref:"Delvac 1330",categorie:"Huiles",stock:1,note:"Fûts"},
+  {id:12,ref:"Mobilgrease XHP 222",categorie:"Graisses",stock:2,note:"Fûts"},
+  {id:13,ref:"Mobilgrease Spécial",categorie:"Graisses",stock:2,note:"Tonnelets"},
+  {id:14,ref:"Mobilgrease Polyrex 462",categorie:"Graisses",stock:2,note:"Cartouches"},
+  {id:15,ref:"Mobilgrease Spécial",categorie:"Graisses",stock:3,note:"Cartouches"},
+  {id:16,ref:"Mobilgrease XHP 222",categorie:"Graisses",stock:8,note:"Cartouches"},
+  {id:17,ref:"Sogelub HT",categorie:"Graisses",stock:3,note:"Tonnelets"},
+  {id:18,ref:"Sogelub MD Green",categorie:"Graisses",stock:3,note:"Tonnelets"},
+  {id:19,ref:"Mobilgrease Unirex N3",categorie:"Graisses",stock:5,note:"Cartouches"},
+  {id:20,ref:"SKF LGLT 2/1",categorie:"Graisses",stock:2,note:"Pots"},
+  {id:21,ref:"SKF LGMT 2/1",categorie:"Graisses",stock:2,note:"Pots"},
+  {id:22,ref:"SKF LAGD 125/EM2",categorie:"Graisses",stock:5,note:"Cartouches"},
+  {id:23,ref:"SKF LAGD 125/WA2",categorie:"Graisses",stock:5,note:"Cartouches"},
+  {id:24,ref:"Sogelub R660",categorie:"Graisses",stock:7,note:"Aérosols"},
 ];
 
 let data = [];
@@ -273,8 +228,7 @@ let currentView = 'stock';
 let editingId = null;
 
 function pinConfirm() {
-  const val = document.getElementById('pin-input').value;
-  if (val === PIN) {
+  if (document.getElementById('pin-input').value === PIN) {
     document.getElementById('pin-overlay').style.display = 'none';
     loadFromBin();
   } else {
@@ -286,20 +240,36 @@ function pinConfirm() {
 
 function setStatus(msg) { document.getElementById('sync-status').textContent = msg; }
 
+async function readBin() {
+  const r = await fetch(BIN_URL + '/latest', { headers: { 'X-Master-Key': API_KEY } });
+  return await r.json();
+}
+
+async function writeBin(record) {
+  const r = await fetch(BIN_URL, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', 'X-Master-Key': API_KEY },
+    body: JSON.stringify(record)
+  });
+  return await r.json();
+}
+
 async function loadFromBin() {
   setStatus('Chargement…');
   try {
-    const r = await fetch(BIN_URL + '/latest', { headers: { 'X-Master-Key': API_KEY } });
-    const json = await r.json();
+    const json = await readBin();
     const saved = json.record && json.record.produits;
     if (saved && saved.length > 0) {
       data = saved;
-      localStorage.setItem('huiles_bornel_cache', JSON.stringify(data));
-      setStatus('Sync ' + new Date().toLocaleTimeString('fr-FR', {hour:'2-digit',minute:'2-digit'}));
     } else {
+      // Première fois : lire le record existant et y ajouter la clé lubrifiants
+      const existing = json.record || {};
+      existing.produits = INITIAL_DATA;
+      await writeBin(existing);
       data = INITIAL_DATA;
-      await saveToBin();
     }
+    localStorage.setItem('huiles_bornel_cache', JSON.stringify(data));
+    setStatus('Sync ' + new Date().toLocaleTimeString('fr-FR', {hour:'2-digit',minute:'2-digit'}));
   } catch(e) {
     const cache = localStorage.getItem('huiles_bornel_cache');
     data = cache ? JSON.parse(cache) : INITIAL_DATA;
@@ -310,11 +280,10 @@ async function loadFromBin() {
 
 async function saveToBin() {
   try {
-    await fetch(BIN_URL, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json', 'X-Master-Key': API_KEY },
-      body: JSON.stringify({ produits: data })
-    });
+    const json = await readBin();
+    const existing = json.record || {};
+    existing.produits = data;
+    await writeBin(existing);
     localStorage.setItem('huiles_bornel_cache', JSON.stringify(data));
     setStatus('Sync ' + new Date().toLocaleTimeString('fr-FR', {hour:'2-digit',minute:'2-digit'}));
   } catch(e) {
@@ -337,7 +306,7 @@ function changeStock(id, delta) {
   if (!f) return;
   f.stock = Math.max(0, f.stock + delta);
   render();
-  showToast(delta > 0 ? `+1 → ${f.stock} ${f.contenant}` : `-1 → ${f.stock} ${f.contenant}`);
+  showToast(delta > 0 ? `+1 → stock : ${f.stock}` : `-1 → stock : ${f.stock}`);
   clearTimeout(window._saveTimer);
   window._saveTimer = setTimeout(saveToBin, 1500);
 }
@@ -345,90 +314,50 @@ function changeStock(id, delta) {
 function render() {
   const search = (document.getElementById('search').value || '').toLowerCase();
   const cat = document.getElementById('cat-filter').value;
-
   document.getElementById('s-total').textContent = data.length;
   document.getElementById('s-zero').textContent = data.filter(f => f.stock === 0).length;
   document.getElementById('s-low').textContent = data.filter(f => f.stock === 1).length;
-
-  const filtered = data.filter(f => {
-    const mc = !cat || f.categorie === cat;
-    const mq = !search || f.ref.toLowerCase().includes(search) || f.contenant.toLowerCase().includes(search);
-    return mc && mq;
-  });
-
+  const filtered = data.filter(f => (!cat || f.categorie === cat) && (!search || f.ref.toLowerCase().includes(search) || f.categorie.toLowerCase().includes(search)));
   const list = document.getElementById('filter-list');
-  if (!filtered.length) {
-    list.innerHTML = '<div class="empty"><div class="empty-icon">🔍</div>Aucun produit trouvé</div>';
-  } else {
-    const cats = ['Huiles', 'Graisses'];
-    let html = '';
-    cats.forEach(c => {
-      const items = filtered.filter(f => f.categorie === c);
-      if (!items.length) return;
-      html += `<div class="section-label"><span>${CAT_ICONS[c]}</span>${c}</div>`;
-      items.forEach(f => {
-        const isLitres = f.contenant === 'Litres';
-        const stockLow = isLitres ? f.stock <= 200 : f.stock <= 1;
-        const cls = f.stock === 0 ? 'zero' : stockLow ? 'low' : '';
-        const numCls = f.stock === 0 ? 'zero' : stockLow ? 'low' : '';
-        const tag = f.stock === 0
-          ? '<span class="status-tag zero">Rupture</span>'
-          : stockLow
-          ? '<span class="status-tag low">Stock bas</span>'
-          : '<span class="status-tag ok">OK</span>';
-        const icon = CONTENANT_ICONS[f.contenant] || '📦';
-        html += `<div class="card ${cls}">
-          <div class="card-top">
-            <div style="flex:1"><div class="card-ref">${f.ref}</div></div>
-            <span class="card-contenant">${icon} ${f.contenant}</span>
-          </div>
-          ${f.note ? `<div class="card-note">ℹ️ ${f.note}</div>` : ''}
-          <div class="card-bottom">
-            <div class="stock-ctrl">
-              <button class="btn-round" onclick="changeStock(${f.id},-1)" ${f.stock===0?'disabled':''}>−</button>
-              <div class="stock-display">
-                <div class="stock-num ${numCls}">${f.stock}</div>
-                <div class="stock-unit">${f.contenant}</div>
-              </div>
-              <button class="btn-round" onclick="changeStock(${f.id},1)">+</button>
-            </div>
-            ${tag}
-          </div>
-        </div>`;
-      });
+  if (!filtered.length) { list.innerHTML = '<div class="empty"><div class="empty-icon">🔍</div>Aucun produit trouvé</div>'; return; }
+  let html = '';
+  ['Graisses','Huiles','Aérosols','Autres'].forEach(c => {
+    const items = filtered.filter(f => f.categorie === c);
+    if (!items.length) return;
+    html += `<div class="section-label"><span>${CAT_ICONS[c]}</span>${c}</div>`;
+    items.forEach(f => {
+      const cls = f.stock === 0 ? 'zero' : f.stock === 1 ? 'low' : '';
+      const tag = f.stock === 0 ? '<span class="status-tag zero">Rupture</span>' : f.stock === 1 ? '<span class="status-tag low">Stock bas</span>' : '<span class="status-tag ok">OK</span>';
+      html += `<div class="card ${cls}">
+        <div class="card-top"><div style="flex:1"><div class="card-ref">${f.ref}</div></div><span class="card-cat">${CAT_ICONS[f.categorie]} ${f.categorie}</span></div>
+        ${f.note ? `<div class="card-note">ℹ️ ${f.note}</div>` : ''}
+        <div class="card-bottom">
+          <div class="stock-ctrl">
+            <button class="btn-round" onclick="changeStock(${f.id},-1)" ${f.stock===0?'disabled':''}>−</button>
+            <div class="stock-num ${cls}">${f.stock}</div>
+            <button class="btn-round" onclick="changeStock(${f.id},1)">+</button>
+          </div>${tag}
+        </div></div>`;
     });
-    list.innerHTML = html;
-  }
-
+  });
+  list.innerHTML = html;
   const ruptures = data.filter(f => f.stock === 0);
-  document.getElementById('nav-alerts').querySelector('.nav-label').textContent =
-    ruptures.length ? `Alertes (${ruptures.length})` : 'Alertes';
-  document.getElementById('alert-list').innerHTML = ruptures.length
-    ? ruptures.map(f => `<div class="alert-card">
-        <div class="alert-ref">${f.ref}</div>
-        <div class="alert-loc">${f.categorie} · ${f.contenant}</div>
-      </div>`).join('')
-    : '<div class="empty"><div class="empty-icon">✅</div>Aucune rupture de stock</div>';
+  document.getElementById('nav-alerts').querySelector('.nav-label').textContent = ruptures.length ? `Alertes (${ruptures.length})` : 'Alertes';
+  document.getElementById('alert-list').innerHTML = ruptures.length ? ruptures.map(f => `<div class="alert-card"><div class="alert-ref">${f.ref}</div><div class="alert-loc">${f.categorie}</div></div>`).join('') : '<div class="empty"><div class="empty-icon">✅</div>Aucune rupture</div>';
 }
 
 function renderManage() {
   const search = (document.getElementById('manage-search').value || '').toLowerCase();
   const filtered = data.filter(f => !search || f.ref.toLowerCase().includes(search));
-  const list = document.getElementById('manage-list');
-  if (!filtered.length) {
-    list.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text3);font-size:13px;">Aucun produit</div>';
-    return;
-  }
-  list.innerHTML = filtered.map(f => `
+  document.getElementById('manage-list').innerHTML = filtered.length ? filtered.map(f => `
     <div style="border:1px solid var(--border);border-radius:var(--radius);padding:10px 12px;margin-bottom:6px;background:var(--bg);">
       <div style="font-size:12px;font-weight:500;">${f.ref}</div>
-      <div style="font-size:11px;color:var(--text2);margin-top:2px;">${CAT_ICONS[f.categorie]} ${f.categorie} · ${CONTENANT_ICONS[f.contenant]||''} ${f.contenant} · stock : ${f.stock}</div>
+      <div style="font-size:11px;color:var(--text2);margin-top:2px;">${CAT_ICONS[f.categorie]} ${f.categorie} · stock : ${f.stock}</div>
       ${f.note ? `<div style="font-size:11px;color:var(--warn);margin-top:3px;">ℹ️ ${f.note}</div>` : ''}
       <div style="display:flex;gap:8px;margin-top:8px;">
-        <button onclick="editItem(${f.id})" style="flex:1;height:30px;border:1px solid var(--border);border-radius:6px;background:var(--surface);font-size:12px;cursor:pointer;color:var(--text);">✏️ Modifier</button>
+        <button onclick="editItem(${f.id})" style="flex:1;height:30px;border:1px solid var(--border);border-radius:6px;background:var(--surface);font-size:12px;cursor:pointer;">✏️ Modifier</button>
         <button onclick="deleteItem(${f.id})" style="flex:1;height:30px;border:1px solid var(--danger);border-radius:6px;background:var(--danger-bg);font-size:12px;cursor:pointer;color:var(--danger);">🗑 Supprimer</button>
-      </div>
-    </div>`).join('');
+      </div></div>`).join('') : '<div style="text-align:center;padding:20px;color:var(--text3);font-size:13px;">Aucun produit</div>';
 }
 
 function editItem(id) {
@@ -437,7 +366,6 @@ function editItem(id) {
   editingId = id;
   document.getElementById('f-ref').value = f.ref;
   document.getElementById('f-cat').value = f.categorie;
-  document.getElementById('f-contenant').value = f.contenant;
   document.getElementById('f-stock').value = f.stock;
   document.getElementById('f-note').value = f.note || '';
   document.getElementById('form-title').textContent = 'Modifier le produit';
@@ -448,11 +376,9 @@ function editItem(id) {
 
 function cancelForm() {
   editingId = null;
-  document.getElementById('f-ref').value = '';
-  document.getElementById('f-cat').value = 'Huiles';
-  document.getElementById('f-contenant').value = 'Fûts';
+  ['f-ref','f-note'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('f-cat').value = 'Graisses';
   document.getElementById('f-stock').value = '1';
-  document.getElementById('f-note').value = '';
   document.getElementById('form-title').textContent = 'Ajouter un produit';
   document.getElementById('form-submit-btn').textContent = 'Ajouter';
   document.getElementById('form-cancel-btn').style.display = 'none';
@@ -460,18 +386,16 @@ function cancelForm() {
 
 function submitForm() {
   const ref = document.getElementById('f-ref').value.trim();
-  const categorie = document.getElementById('f-cat').value;
-  const contenant = document.getElementById('f-contenant').value;
-  const stock = parseFloat(document.getElementById('f-stock').value) || 0;
-  const note = document.getElementById('f-note').value.trim();
   if (!ref) { showToast('Référence requise'); return; }
+  const categorie = document.getElementById('f-cat').value;
+  const stock = parseInt(document.getElementById('f-stock').value) || 0;
+  const note = document.getElementById('f-note').value.trim();
   if (editingId !== null) {
     const f = data.find(x => x.id === editingId);
-    if (f) { f.ref = ref; f.categorie = categorie; f.contenant = contenant; f.stock = stock; f.note = note; }
+    if (f) { f.ref=ref; f.categorie=categorie; f.stock=stock; f.note=note; }
     showToast('Produit modifié');
   } else {
-    const newId = data.length > 0 ? Math.max(...data.map(f => f.id)) + 1 : 0;
-    data.push({ref, categorie, contenant, stock, note, id: newId});
+    data.push({ref,categorie,stock,note,id:Math.max(0,...data.map(f=>f.id))+1});
     showToast('Produit ajouté');
   }
   cancelForm(); render(); renderManage();
@@ -484,18 +408,17 @@ function deleteItem(id) {
   if (!f || !confirm(`Supprimer "${f.ref}" ?`)) return;
   data = data.filter(x => x.id !== id);
   render(); renderManage();
-  showToast('Produit supprimé');
+  showToast('Supprimé');
   clearTimeout(window._saveTimer);
   window._saveTimer = setTimeout(saveToBin, 1500);
 }
 
 function switchView(v) {
-  currentView = v;
-  ['stock','alerts','manage','config'].forEach(name => {
-    document.getElementById('view-'+name).style.display = name === v ? '' : 'none';
-    document.getElementById('nav-'+name).classList.toggle('active', name === v);
+  ['stock','alerts','manage','config'].forEach(n => {
+    document.getElementById('view-'+n).style.display = n===v?'':'none';
+    document.getElementById('nav-'+n).classList.toggle('active', n===v);
   });
-  if (v === 'manage') renderManage();
+  if (v==='manage') renderManage();
 }
 
 function showToast(msg) {
